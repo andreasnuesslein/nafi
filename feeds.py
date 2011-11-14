@@ -1,17 +1,46 @@
+
 from django.contrib.syndication.views import Feed
+from django.utils.feedgenerator import Atom1Feed
 
+from collector import News
 
-class LatestEntriesFeed(Feed):
-    title = "feed accumulator"
-    link = "/news/"
-    description = "Newsfeed Accumulator for GP|Bln"
+from feedparse.config.models import Source, Filter
+
+class RssFeed(Feed):
+    title = "Feed Aggregator"
+    link = "http://gpnews.noova.de/"
+    description = "Newsfeed Aggregator for GP|Bln"
+
+    def get_object(self, request, timestamp):
+        self.timestamp = timestamp
+        pass
 
     def items(self):
-        return NewsItem.objects.order_by('-pub_date')[:5]
+        sources = Source.objects.filter(group=self.timestamp)
+        filters = Filter.objects.filter(group=self.timestamp)
+        news = News(sources, filters)
+        return news.entries
+
+
+    def item_link(self, item):
+        return item.link
 
     def item_title(self, item):
         return item.title
 
     def item_description(self, item):
-        return item.description
+        if 'summary' in dir(item):
+            return item.summary
+        if 'title_detail' in dir(item):
+            return item.title_detail
+        return item.title
 
+    def item_pubdate(self, item):
+        from datetime import datetime
+        from time import mktime
+        return datetime.fromtimestamp(mktime(item.updated_parsed))
+
+class AtomFeed(RssFeed):
+    feed_type = Atom1Feed
+    link = "/atom/"
+    subtitle = RssFeed.description

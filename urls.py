@@ -1,17 +1,19 @@
 from django.conf.urls.defaults import patterns, include, url
 
-# Uncomment the next two lines to enable the admin:
-# from django.contrib import admin
-# admin.autodiscover()
+from feedparse.feeds import RssFeed, AtomFeed
+from feedparse.config.views import index, htmlrss
+
+from django.contrib import admin
+admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'feedparse.views.home', name='home'),
-    # url(r'^feedparse/', include('feedparse.foo.urls')),
+        url('^$', index),
 
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+        url('^(?P<timestamp>\d+)/rss/', RssFeed()),
+        url('^(?P<timestamp>\d+)/atom/', AtomFeed()),
+        url('^(?P<timestamp>\d+)/html/', htmlrss),
+        url('^(?P<timestamp>\d+)/', index),
 
-    # Uncomment the next line to enable the admin:
-    # url(r'^admin/', include(admin.site.urls)),
+
+    url(r'^admin/', include(admin.site.urls)),
 )

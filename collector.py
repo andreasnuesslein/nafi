@@ -1,4 +1,3 @@
-from __future__ import print_function
 
 import feedparser
 import re
@@ -10,25 +9,29 @@ class Entry:
 
     def __unicode__(self):
         return self.updated + " | "+ self.summary
-        #return(u"%s %s %s" %(self.updated, self.title, self.summary))
-
 
 class Feed:
-    def __init__(self, source):
+    def __init__(self, source, filters):
         self.feed = feedparser.parse( source )
         self.entries = []
+        reg = re.compile("|".join([x.regex for x in filters]), re.I)
+
         for i in self.feed.entries:
-            self.entries += [Entry(i)]
-        print(unicode(self.entries[0]))
-    def match(self,include):
-        pass
+            if reg.search(dict_lin(i)):
+
+                self.entries += [Entry(i)]
 
 
+def dict_lin(mydict):
+    string = unicode(mydict.title)
+    string += unicode(mydict.title_detail)
+    string += unicode(mydict.summary)
+    return string
 
+class News:
 
-
-news = "http://www.tagesschau.de/xml/rss2"
-f1 = Feed(news)
-f1.match('x')
-
-#import ipdb; ipdb.set_trace()
+    def __init__(self, sources, filters):
+        self.entries = []
+        for source in sources:
+            f = Feed(source.url,filters)
+            self.entries += f.entries
