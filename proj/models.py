@@ -18,12 +18,12 @@ class Source(models.Model):
         feed = parse(self.url)
         try:
             keys = feed.entries[0].keys()
-            if len(set(keys) & set(['summary_detail', 'title', 'summary', 'title_detail', 'link', 'updated_parsed'])) == 6:
-                return (self.url, 1)
-            return (self.url, keys)
+            if 'updated_parsed' in keys:
+                return {'url':self.url, 'status':'green'}
+            return {'url':self.url, 'status':'yellow', 'msg':'updated missing.. not gonna archive'}
 
         except:
-            return (self.url, -1)
+            return {'url':self.url, 'status':'red'}
 
 class Filter(models.Model):
     regex = models.CharField(max_length=200)
@@ -47,18 +47,15 @@ class NewsContent(models.Model):
 class NewsEntry(models.Model):
     url = models.URLField()
     title = models.CharField(max_length=500)
-    title_detail = models.CharField(max_length=1000, blank=True)
     summary = models.CharField(max_length=500)
-    summary_detail = models.CharField(max_length=1000, blank=True)
-    updated = models.DateTimeField()
+    updated = models.DateTimeField(blank=True)
     provider = models.ForeignKey(NewsContent)
 
     def __unicode__(self):
         return("%s: %s" %(self.updated, self.title))
 
     def matches(self, regex):
-        searchthrough = unicode(self.title) + unicode(self.title_detail) + unicode(self.summary) + \
-                unicode(self.summary_detail)
+        searchthrough = unicode(self.title) + unicode(self.summary)
 
         if regex.search(searchthrough):
             return True

@@ -6,19 +6,11 @@
 
   </head>
 
-  <body>
+  <body bgcolor="grey">
 
     <ul style="font-family:sans;font-size: 12px;">
-      {% for source,keys in sources %}
-        {% if keys == 1 %}
-        <li><font color=green>{{source}}</font></li>
-        {% else %}
-        {% if keys == -1 %}
-        <li><font color=red>{{source}}</font></li>
-        {% else %}
-        <li><font color=yellow>{{source}}{{keys}}</font></li>
-        {%endif%}
-        {%endif%}
+      {% for source in sources %}
+        <li><font color={{source.status}}>{{source.url}} {{source.msg}}</font></li>
       {% endfor %}
   </ul>
   </body>

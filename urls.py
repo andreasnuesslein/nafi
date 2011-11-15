@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import patterns, include, url
 
-from feedparse.feeds import RssFeed, AtomFeed
+from feedparse.proj.rss_views import RssFeed, AtomFeed
 from feedparse.proj.views import *
 
 from django.contrib import admin

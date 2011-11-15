@@ -7,16 +7,13 @@ from proj.models import NewsContent, NewsEntry
 
 """ Internet-fetching Unit """
 class Newsprovider:
-    def __init__(self, source, filters):
+    def __init__(self, source):
         self.source = source
         self.fetch()
 
-        reg = re.compile("|".join([u.regex for u in filters]), re.I)
-        self.filtered_entries = [entry for entry in self.entries() if entry.matches(reg)]
-
-
 
     def fetch(self):
+        print "fetching: %s" % self.source
         try:
             self.provider = NewsContent.objects.get(url = self.source)
         except:
@@ -25,25 +22,27 @@ class Newsprovider:
             self.provider.checked_last = datetime(datetime.now().year,1,1,0,0)
 
         diff = (datetime.now() - self.provider.checked_last)
-        print(diff)
         if diff.days <= 0 and diff.seconds <= 1800:
-            print("ALREADY CHECKED: %s" % (self.source))
-            #return
-
-        print("REDO CHECKING: %s" % (self.source))
-
+            return
 
         """ actually fetch news """
         feed = feedparser.parse( self.source )
-        print feed.entries[0].keys()
-        #import ipdb;ipdb.set_trace()
 
-        entries = [x for x in feed.entries if (  datetime.fromtimestamp(mktime(x.updated_parsed)) > self.provider.checked_last)]
-        print entries
-        for entry in entries:
-            ne = NewsEntry(url=entry.link, title=entry.title, title_detail=entry.title_detail,
-                    summary=entry.summary, summary_detail=entry.summary_detail,
-                    updated=datetime.fromtimestamp(mktime(entry.updated_parsed)),
+        if not hasattr(feed.entries[0], 'updated_parsed') or feed.entries[0]['updated_parsed'] == None:
+            NewsEntry.objects.filter(provider = self.provider).delete()
+        else:
+            feed.entries = [x for x in feed.entries if (  datetime.fromtimestamp(mktime(x.updated_parsed)) > self.provider.checked_last)]
+
+        for entry in feed.entries:
+            try:
+                updated = datetime.fromtimestamp(mktime(entry.updated_parsed))
+                if updated == None:
+                    updated = datetime.now()
+            except:
+                updated = datetime.now()
+
+            ne = NewsEntry(url=entry.link, title=entry.title, summary=entry.summary,
+                    updated=updated,
                     provider = self.provider)
             ne.save()
 
@@ -52,9 +51,12 @@ class Newsprovider:
         return
 
     def entries(self):
-        x = NewsEntry.objects.filter(provider=self.provider)
-        print x
-        return x
+        return NewsEntry.objects.filter(provider=self.provider)
+
+
+    def myfilter(self, filters):
+        reg = re.compile("|".join([u.regex for u in filters]), re.I)
+        return [entry for entry in self.entries() if entry.matches(reg)]
 
 
 
@@ -63,5 +65,5 @@ class News:
     def __init__(self, sources, filters):
         self.entries = []
         for source in sources:
-            f = Newsprovider(source.url,filters)
-            self.entries += f.filtered_entries
+            f = Newsprovider(source.url)
+            self.entries += f.myfilter(filters)

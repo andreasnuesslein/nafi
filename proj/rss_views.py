@@ -2,7 +2,7 @@
 from django.contrib.syndication.views import Feed
 from django.utils.feedgenerator import Atom1Feed
 
-from collector import News
+from feedparse.collector import News
 
 from feedparse.proj.models import Source, Filter
 
@@ -23,7 +23,7 @@ class RssFeed(Feed):
 
 
     def item_link(self, item):
-        return item.link
+        return item.url
 
     def item_title(self, item):
         return item.title
@@ -38,7 +38,8 @@ class RssFeed(Feed):
     def item_pubdate(self, item):
         from datetime import datetime
         from time import mktime
-        return datetime.fromtimestamp(mktime(item.updated_parsed))
+        return item.updated
+        #return datetime.fromtimestamp(mktime(item.updated))
 
 class AtomFeed(RssFeed):
     feed_type = Atom1Feed
