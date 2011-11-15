@@ -1,0 +1,15 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{% load i18n %}
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+<title>FeedFilter:: {% block title %}{% trans "Home" %}{% endblock %}</title>
+<link rel="alternate" type="application/rss+xml" title="FeedFilter" href="http://gpnews.noova.de/{{timestamp}}/rss/">
+<link rel="alternate" type="application/atom+xml" title="FeedFilter" href="http://gpnews.noova.de/{{timestamp}}/atom/">
+<script type="text/javascript" src="{{MEDIA_URL}}js/jquery.min.js"></script>
+
+</head>
+<body style="width:800px;margin:0px auto;">
+            {% block content %}{% endblock %}
+</body>
+</html>

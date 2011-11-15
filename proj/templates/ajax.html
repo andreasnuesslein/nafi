@@ -1,0 +1,17 @@
+  <table style="border-style:solid dotted; border-collapse: collapse;">
+  {%for item in news %}
+  <tr>
+    <td style="border-top-width: thin; border-top-style:dotted;">
+      <div style="margin-top:0.5em;">
+        <div style="font-family:sans; font-size:1.1em;"><a href="{{item.url}}">{{item.title}}</a></div>
+        <div style="font-family:sans; font-size:0.8em;" >{{item.updated}}</div>
+        <div style="margin-bottom:0.6em; margin-top:0.3em;">
+        {% autoescape off %}
+        {% firstof item.summary item.title %}
+        {% endautoescape %}
+        </div>
+      </div>
+    </td>
+  </tr>
+  {%endfor%}
+</table>

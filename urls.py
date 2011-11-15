@@ -1,4 +1,5 @@
 from django.conf.urls.defaults import patterns, include, url
+from django.conf import settings
 
 from feedparse.proj.rss_views import RssFeed, AtomFeed
 from feedparse.proj.views import *
@@ -11,7 +12,8 @@ urlpatterns = patterns('',
 
         url('^(?P<timestamp>\d+)/rss/', RssFeed()),
         url('^(?P<timestamp>\d+)/atom/', AtomFeed()),
-        url('^(?P<timestamp>\d+)/html/', htmlrss),
+        url('^(?P<timestamp>\d+)/html/', ajax),
+        url('^(?P<timestamp>\d+)/ajax/', ajax),
         url('^(?P<timestamp>\d+)/validate/', validate_sources),
         url('^(?P<timestamp>\d+)/', index),
 

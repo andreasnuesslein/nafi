@@ -58,13 +58,12 @@ def validate_sources(request, timestamp):
     data = {'sources': valid_sources }
     return render_to_response(request, template, data)
 
-
-def htmlrss(request, timestamp):
+def ajax(request, timestamp):
     sources = Source.objects.filter(group=timestamp)
     filters = Filter.objects.filter(group=timestamp)
-
-    template = 'rss.html'
     news = News(sources,filters)
+
     data = {'news': news.entries}
+    template = 'ajax.html'
     return render_to_response(request, template, data)
 

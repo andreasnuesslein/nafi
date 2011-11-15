@@ -1,43 +1,57 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-  <head>
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-    <title>Feed Aggregator</title>
-    <link rel="alternate" type="application/rss+xml" title="Feed Aggregator" href="http://gpnews.noova.de/{{timestamp}}/rss/">
-    <link rel="alternate" type="application/atom+xml" title="Feed Aggregator" href="http://gpnews.noova.de/{{timestamp}}/atom/">
+{% extends "base.html" %}
+{% block content %}
+<script>
+  $(function() {
+    $("#blubber").load("/{{timestamp}}/ajax/");
+  });
+</script>
+<style>
+  table {
+    border-style:solid dotted;
+    border-collapse: collapse;
+  }
 
-  </head>
-
-  <body>
-    <table width=900><tr><td><h1>Feed Aggregator</h1></td><td>
-    <br /><b><a href="http://gpnews.noova.de/{{timestamp}}/rss/">http://gpnews.noova.de/{{timestamp}}/rss/</a></b><br />
+</style>
+<div align=center>
+<h1>FeedFilter</h1>
+<b><a href="http://gpnews.noova.de/{{timestamp}}/rss/">http://gpnews.noova.de/{{timestamp}}/rss/</a></b><br/>
+<a href="http://gpnews.noova.de/{{timestamp}}/atom/">http://gpnews.noova.de/{{timestamp}}/atom</a><br/>
+<a href="http://gpnews.noova.de/{{timestamp}}/html/">http://gpnews.noova.de/{{timestamp}}/html/</a>
+</div>
+<!--
+<table width=900><tr><td><h1>FeedFilter</h1></td><td>
+  <br /><b><a href="http://gpnews.noova.de/{{timestamp}}/rss/">http://gpnews.noova.de/{{timestamp}}/rss/</a></b><br />
     <a href="http://gpnews.noova.de/{{timestamp}}/atom/">http://gpnews.noova.de/{{timestamp}}/atom</a><br />
     <a href="http://gpnews.noova.de/{{timestamp}}/html/">http://gpnews.noova.de/{{timestamp}}/html/</a>
-    </td></tr></table>
-  <form method=POST action="/">
-      {% csrf_token %}
-      <table width="900">
-        <tr><th>Quellen</th><th>Filter</th></tr>
-        <tr>
-          <td>
-<textarea rows="15" cols="70" name='sources'>
+  </td></tr>
+</table>
+-->
+<br/><br/>
+<form method=POST action="/">
+  {% csrf_token %}
+  <table style="width:100%;">
+    <tr><td>
+<textarea rows="15" style="width:99%; overflow:hidden; border-style:dotted;" name='sources'>
 {% for source in sources %}{{source.url}}
 {%endfor%}</textarea>
-</td><td>
-<textarea rows="15" cols="30" name='filters'>
+</td></tr>
+<tr><td>
+<textarea rows="2" style="width:99%; overflow:hidden; border-style:dotted;" name='filters'>
 {% for filt in filters %}{{filt.regex}}
 {%endfor%}</textarea>
-      </td></tr>
-      <tr><td><input type="submit" name="op" value="Erzeugen" /><input type="submit" name="op" value="Validieren">
-      </td><td></td></tr>
-    </table>
-  </form>
+</td></tr>
+<tr><td>
+    <input type="submit" name="op" value="Erzeugen" /><!--<input type="submit" name="op" value="Validieren">-->
+</td></tr>
+</table>
+</form>
 
   <br />
   <br />
 
-  <iframe src="/{{timestamp}}/html/" width="900" height="400">
-        <p>Your browser does not support iframes.</p>
-  </iframe>
-  </body>
-</html>
+  <div style="width:800px; ">
+    <div id='blubber'><img src="{{MEDIA_URL}}img/spinner.gif" />
+    </div>
+</div>
+
+{% endblock %}
