@@ -1,5 +1,5 @@
 from django.contrib import admin
-from feedparse.config.models import *
+from feedparse.proj.models import *
 
 class SourceAdmin(admin.ModelAdmin):
     pass

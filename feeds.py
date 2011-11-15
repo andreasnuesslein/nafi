@@ -4,7 +4,7 @@ from django.utils.feedgenerator import Atom1Feed
 
 from collector import News
 
-from feedparse.config.models import Source, Filter
+from feedparse.proj.models import Source, Filter
 
 class RssFeed(Feed):
     title = "Feed Aggregator"

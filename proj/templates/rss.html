@@ -14,7 +14,7 @@
   <body>
     <table>
       {%for item in news %}
-      <tr><td><a href="{{item.link}}">{{item.title}}</a> | {{item.updated}}<br/>
+      <tr><td><a href="{{item.url}}">{{item.title}}</a> | {{item.updated}}<br/>
     {% autoescape off %}
     {% firstof item.summary item.title %}
     {% endautoescape %}
