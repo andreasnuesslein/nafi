@@ -2,12 +2,12 @@
 from django.contrib.syndication.views import Feed
 from django.utils.feedgenerator import Atom1Feed
 
-from feedparse.collector import News
+from feedfilter.collector import News
 
-from feedparse.proj.models import Source, Filter
+from feedfilter.proj.models import Source, Filter
 
 class RssFeed(Feed):
-    title = "Feed Aggregator"
+    title = "FeedFilter"
     link = "http://gpnews.noova.de/"
     description = "Newsfeed Aggregator for GP|Bln"
 

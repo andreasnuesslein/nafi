@@ -2,13 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-    <title>Feed Aggregator</title>
-
   </head>
 
-  <body bgcolor="grey">
+  <body>
 
-    <ul style="font-family:sans;font-size: 12px;">
+    <ul style="font-family:sans;font-size: 12px;font-face:bold;">
       {% for source in sources %}
         <li><font color={{source.status}}>{{source.url}} {{source.msg}}</font></li>
       {% endfor %}

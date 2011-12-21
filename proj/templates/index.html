@@ -14,24 +14,17 @@
 </style>
 <div align=center>
 <h1>FeedFilter</h1>
-<b><a href="http://gpnews.noova.de/{{timestamp}}/rss/">http://gpnews.noova.de/{{timestamp}}/rss/</a></b><br/>
-<a href="http://gpnews.noova.de/{{timestamp}}/atom/">http://gpnews.noova.de/{{timestamp}}/atom</a><br/>
-<a href="http://gpnews.noova.de/{{timestamp}}/html/">http://gpnews.noova.de/{{timestamp}}/html/</a>
+<b><a href="http://gpnews.noova.de/{{timestamp}}/rss">http://gpnews.noova.de/{{timestamp}}/rss</a></b><br/>
+<a href="http://gpnews.noova.de/{{timestamp}}/atom">http://gpnews.noova.de/{{timestamp}}/atom</a><br/>
+<a href="http://gpnews.noova.de/{{timestamp}}/html">http://gpnews.noova.de/{{timestamp}}/html</a>
 </div>
-<!--
-<table width=900><tr><td><h1>FeedFilter</h1></td><td>
-  <br /><b><a href="http://gpnews.noova.de/{{timestamp}}/rss/">http://gpnews.noova.de/{{timestamp}}/rss/</a></b><br />
-    <a href="http://gpnews.noova.de/{{timestamp}}/atom/">http://gpnews.noova.de/{{timestamp}}/atom</a><br />
-    <a href="http://gpnews.noova.de/{{timestamp}}/html/">http://gpnews.noova.de/{{timestamp}}/html/</a>
-  </td></tr>
-</table>
--->
+
 <br/><br/>
 <form method=POST action="/">
   {% csrf_token %}
   <table style="width:100%;">
     <tr><td>
-<textarea rows="15" style="width:99%; overflow:hidden; border-style:dotted;" name='sources'>
+<textarea rows="15" style="width:99%; border-style:dotted;" name='sources'>
 {% for source in sources %}{{source.url}}
 {%endfor%}</textarea>
 </td></tr>
@@ -50,8 +43,9 @@
   <br />
 
   <div style="width:800px; ">
-    <div id='blubber'><img src="{{MEDIA_URL}}img/spinner.gif" />
+    <div align=center id='blubber'><img src="{{MEDIA_URL}}img/spinner.gif" />
     </div>
 </div>
-
+<br/>
+<br/>
 {% endblock %}

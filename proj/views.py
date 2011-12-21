@@ -1,8 +1,8 @@
 from django.http import HttpResponseRedirect, HttpResponse
 
-from feedparse.contrib.shortcuts import render_to_response
-from feedparse.proj.models import Source, Filter
-from feedparse.collector import News
+from feedfilter.contrib.shortcuts import render_to_response
+from feedfilter.proj.models import Source, Filter
+from feedfilter.collector import News
 
 from time import time
 

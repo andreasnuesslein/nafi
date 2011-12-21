@@ -20,7 +20,7 @@ class Source(models.Model):
             keys = feed.entries[0].keys()
             if 'updated_parsed' in keys:
                 return {'url':self.url, 'status':'green'}
-            return {'url':self.url, 'status':'yellow', 'msg':'updated missing.. not gonna archive'}
+            return {'url':self.url, 'status':'#bbbb00', 'msg':'updated missing.. not gonna archive'}
 
         except:
             return {'url':self.url, 'status':'red'}

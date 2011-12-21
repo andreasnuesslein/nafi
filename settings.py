@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Django settings for feedparse project.
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -103,9 +102,9 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'feedparse.urls'
+ROOT_URLCONF = 'feedfilter.urls'
 
-TEMPLATE_DIRS = ('/home/nutz/feedparse/templates'
+TEMPLATE_DIRS = ('/home/nutz/feedfilter/templates'
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -118,7 +117,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'feedparse.proj',
+    'feedfilter.proj',
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',

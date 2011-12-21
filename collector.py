@@ -27,6 +27,9 @@ class Newsprovider:
 
         """ actually fetch news """
         feed = feedparser.parse( self.source )
+        if not feed.entries:
+            self.provider.delete()
+            return
 
         if not hasattr(feed.entries[0], 'updated_parsed') or feed.entries[0]['updated_parsed'] == None:
             NewsEntry.objects.filter(provider = self.provider).delete()
