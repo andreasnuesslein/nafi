@@ -15,8 +15,10 @@ urlpatterns = patterns('',
         url('^(?P<timestamp>\d+)/html', ajax),
         url('^(?P<timestamp>\d+)/ajax', ajax),
         url('^(?P<timestamp>\d+)/validate', validate_sources),
-        url('^(?P<timestamp>\d+)/', index),
+        #url('^(?P<timestamp>\d+)/', index),
+        url('^(?P<word>\w+)/', index),
 
+        url('^updates/', updates),
 
     url(r'^admin/', include(admin.site.urls)),
 )

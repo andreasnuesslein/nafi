@@ -7,8 +7,8 @@ from feedfilter.collector import News
 from feedfilter.proj.models import Source, Filter
 
 class RssFeed(Feed):
-    title = "FeedFilter"
-    link = "http://gpnews.noova.de/"
+    title = "NaFi: Nachrichten Filter"
+    link = "http://nafi.noova.de/"
     description = "Newsfeed Aggregator for GP|Bln"
 
     def get_object(self, request, timestamp):

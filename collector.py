@@ -47,6 +47,7 @@ class Newsprovider:
             ne = NewsEntry(url=entry.link, title=entry.title, summary=entry.summary,
                     updated=updated,
                     provider = self.provider)
+            print ne
             ne.save()
 
         self.provider.save()

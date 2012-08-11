@@ -1,4 +1,7 @@
 from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import redirect
+from django.core.mail import send_mail
+
 
 from feedfilter.contrib.shortcuts import render_to_response
 from feedfilter.proj.models import Source, Filter
@@ -19,7 +22,7 @@ def index(request, timestamp=None):
         filters = request.POST['filters'].split('\r\n')
 
         for source in sources:
-            s = Source(url=source,group=group)
+            s = Source(url=source.replace(" ",""),group=group)
             if s.sane():
                 s.save()
         for filt in filters:
@@ -67,3 +70,9 @@ def ajax(request, timestamp):
     template = 'ajax.html'
     return render_to_response(request, template, data)
 
+def updates(request):
+    if request.method == 'POST':
+        send_mail("NaFi abo", request.POST['email'], 'nafi@nafi.gpbintern.de', ['nutz@noova.de'])
+        send_mail("NaFi Benachrichtigung", "Aloha, ich habe dich in meiner Liste gespeichert und werde dir eine Email schicken, sobald NaFi eine Login-Moeglichkeit bietet. :)", 'nafi@nafi.gpbintern.de', [request.POST['email']])
+
+    return redirect("/")

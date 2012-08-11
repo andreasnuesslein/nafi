@@ -1,15 +1,54 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 {% load i18n %}
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-<title>FeedFilter:: {% block title %}{% trans "Home" %}{% endblock %}</title>
-<link rel="alternate" type="application/rss+xml" title="FeedFilter" href="http://gpnews.noova.de/{{timestamp}}/rss/">
-<link rel="alternate" type="application/atom+xml" title="FeedFilter" href="http://gpnews.noova.de/{{timestamp}}/atom/">
-<script type="text/javascript" src="{{MEDIA_URL}}js/jquery.min.js"></script>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <title>NaFi:  {% block title %}{% trans "Home" %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" media="screen" href="{{MEDIA_URL}}css/bootstrap.min.css">
+    <link rel="stylesheet" media="screen" href="{{MEDIA_URL}}css/main.css">
+    <link rel="stylesheet" media="screen" href="{{MEDIA_URL}}css/bootstrap-responsive.min.css">
 
-</head>
-<body style="width:800px;margin:0px auto;">
-            {% block content %}{% endblock %}
-</body>
+    <link rel="alternate" type="application/rss+xml" title="FeedFilter" href="http://nafi.gpbintern.de/{{timestamp}}/rss/">
+    <link rel="alternate" type="application/atom+xml" title="FeedFilter" href="http://nafi.gpbintern.de/{{timestamp}}/atom/">
+    <script type="text/javascript" src="{{MEDIA_URL}}js/jquery.min.js"></script>
+    <script type="text/javascript" src="{{MEDIA_URL}}js/bootstrap.min.js"></script>
+
+  </head>
+  <body> <!-- style="width:800px;margin:0px auto;"> -->
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">NaFi</a>
+        </div>
+      </div>
+    </div>
+
+    </div>
+    <div class="container">
+      <div class="content">
+        <h4>Hallihallo ÖffKo!</h4>
+        <form action="/updates/" method=POST>
+          {% csrf_token %}
+          <div class="control-group">
+            <label class="control-label" for="appendedInputButton">Bitte gib deine Email-Adresse ein, dann werde ich dir eine Mail schicken, wenn ich NaFi geupdatet habe:</label>
+            <div class="controls">
+              <div class="input-append">
+                <input class="span2" id="appendedInputButton" name="email" size="16" type="text" /><button class="btn btn-submit" type="submit">Absenden</button>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        {% block content %}{% endblock %}
+      </div>
+      <footer>
+      <p></p>
+      <p>
+      NaFi
+      </p>
+      </footer>
+
+    </div>
+  </body>
 </html>
