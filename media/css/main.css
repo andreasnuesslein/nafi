@@ -19,3 +19,6 @@ body {
   min-height: 10px;
 }
 
+.highlight {
+  background-color: #FF0;
+}

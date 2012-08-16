@@ -2,9 +2,9 @@
 from django.contrib.syndication.views import Feed
 from django.utils.feedgenerator import Atom1Feed
 
-from feedfilter.collector import News
+from proj.collector import News
 
-from feedfilter.proj.models import Source, Word
+from proj.models import Source, Word
 
 class RssFeed(Feed):
     title = "NaFi: Nachrichten Filter"

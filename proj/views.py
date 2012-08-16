@@ -4,8 +4,8 @@ from django.core.mail import send_mail
 
 
 from feedfilter.contrib.shortcuts import render_to_response
-from feedfilter.proj.models import Source, Word
-from feedfilter.collector import News
+from proj.models import Source, Word
+from proj.collector import News
 
 from time import time
 

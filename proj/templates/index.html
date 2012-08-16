@@ -9,14 +9,11 @@
         if( $(this).text() == "") {
           $(this).html("=(");
         }
+        var ix = $("#filter-regex").val();
+        $(this).html($(this).html().replace(new RegExp("("+ix+")","gi"),"<span class='highlight'>$1</span>"));
       });
     }
     refreshHits();
-
-    $('#myTab a').click(function (e) {
-      e.preventDefault();
-      $(this).tab('show');
-    });
 
     $("#renameSubmit").click(function(e) {
       e.preventDefault();
@@ -116,11 +113,12 @@
         'title':"RSS Feed",
         'content': 'Diesen Link solltest du nun in deinem bevorzugten Feedreader einfügen. So wirst du immer informiert, wenn dein Schlagwort in den von dir angegeben Feeds vorkommt.',
       });
-      $(".icon-pencil").tooltip({'placement':'bottom'});
       $("#renameList").click(function(){
         $('#myModal').modal();
         $("#inputnewname").focus();
       });
+
+      $(".toolti").tooltip({'placement':'bottom'});
 
   });
 </script>
@@ -130,7 +128,7 @@
   <div class="row">
     <div class="span6">
       <h1>NaFi für <span id="listname" style="color:green;border-bottom: 1px black dotted;">{{word}}</span>
-        <a id="renameList" class="icon-pencil" href="#myModal" data-toggle="modal" data-target="#myModal" data-original-title="Liste umbenennen"></a>
+        <a id="renameList" class="icon-pencil toolti" href="#myModal" data-toggle="modal" data-target="#myModal" data-original-title="Liste umbenennen"></a>
       </h1> <!--<button class="btn"><a class="icon-share"></a> Liste duplizieren</button> -->
     </div>
     <div class="span6">
@@ -186,8 +184,9 @@
             {% for source in sources %}
             <tr class="url-row">
               <td class="url-url">{{source.url}}</td>
-              <td><a alt="view" title="view" target="_blank" href="/source/{{source.url|urlencode}}" class="icon-list"></a>
-                <a href="" class="icon-remove url-del"></a>
+              <td>
+                <a target="_blank" href="/source/{{source.url|urlencode}}" class="icon-list toolti" data-original-title="Quelle anzeigen"></a>
+                <a href="" class="icon-remove url-del toolti" data-original-title="Quelle löschen"></a>
               </td>
             </tr>
             {%endfor%}
