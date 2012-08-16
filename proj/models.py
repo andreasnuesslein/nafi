@@ -1,12 +1,21 @@
 from django.db import models
 from feedparser import parse
 
-class Source(models.Model):
-    url = models.URLField()
-    group = models.IntegerField()
+class Word(models.Model):
+    name = models.CharField(max_length=100)
+    regex = models.CharField(max_length=500)
 
     def __unicode__(self):
-        return("%s: %s" %(self.group, self.url))
+        return("%s: %s" %(self.name,self.regex))
+
+
+
+class Source(models.Model):
+    url = models.URLField()
+    word = models.ForeignKey('Word')
+
+    def __unicode__(self):
+        return("%s: %s" %(self.word, self.url))
 
     def sane(self):
         if self.url == "":
@@ -25,17 +34,6 @@ class Source(models.Model):
         except:
             return {'url':self.url, 'status':'red'}
 
-class Filter(models.Model):
-    regex = models.CharField(max_length=200)
-    group = models.IntegerField()
-
-    def __unicode__(self):
-        return("%s: %s" %(self.group, self.regex))
-
-    def sane(self):
-        if self.regex == "":
-            return False
-        return True
 
 class NewsContent(models.Model):
     url = models.URLField()

@@ -10,15 +10,19 @@ admin.autodiscover()
 urlpatterns = patterns('',
         url('^$', index),
 
-        url('^(?P<timestamp>\d+)/rss', RssFeed()),
-        url('^(?P<timestamp>\d+)/atom', AtomFeed()),
-        url('^(?P<timestamp>\d+)/html', ajax),
-        url('^(?P<timestamp>\d+)/ajax', ajax),
-        url('^(?P<timestamp>\d+)/validate', validate_sources),
-        #url('^(?P<timestamp>\d+)/', index),
+        url(r'^admin/', include(admin.site.urls)),
+
+        url('^source/(?P<url>.+)', viewSource),
+        url('^rename/(?P<word>\w+)/(?P<new>\w+)', renameWord),
+
+        url('^(?P<word>\w+)/rss', RssFeed()),
+        #url('^(?P<word>\w+)/atom', AtomFeed()),
+        url('^(?P<word>\w+)/html', ajax),
+        url('^(?P<word>\w+)/ajax', ajax),
+
+        url('^(?P<word>\w+)/del/(?P<url>.+)', delSource),
+        url('^(?P<word>\w+)/add/(?P<url>.+)', addSource),
+        url('^(?P<word>\w+)/filter/(?P<regex>.*)', saveFilter),
+
         url('^(?P<word>\w+)/', index),
-
-        url('^updates/', updates),
-
-    url(r'^admin/', include(admin.site.urls)),
 )

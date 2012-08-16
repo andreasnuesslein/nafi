@@ -58,16 +58,16 @@ class Newsprovider:
         return NewsEntry.objects.filter(provider=self.provider)
 
 
-    def myfilter(self, filters):
-        reg = re.compile("|".join([u.regex for u in filters]), re.I)
+    def myfilter(self, regex):
+        reg = re.compile(regex, re.I)
         return [entry for entry in self.entries() if entry.matches(reg)]
 
 
 
 """ News will walk through given sources and filter the messages accordingly """
 class News:
-    def __init__(self, sources, filters):
+    def __init__(self, sources, regex):
         self.entries = []
         for source in sources:
             f = Newsprovider(source.url)
-            self.entries += f.myfilter(filters)
+            self.entries += f.myfilter(regex)

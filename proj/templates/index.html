@@ -2,70 +2,203 @@
 {% block content %}
 <script>
   $(function() {
-    $("#blubber").load("/{{timestamp}}/ajax/");
+
+    function refreshHits() {
+      $("#blubber").html("<img src='{{MEDIA_URL}}img/spinner.gif' />");
+      $("#blubber").load("/{{word}}/ajax/", function() {
+        if( $(this).text() == "") {
+          $(this).html("=(");
+        }
+      });
+    }
+    refreshHits();
 
     $('#myTab a').click(function (e) {
       e.preventDefault();
       $(this).tab('show');
-    })
+    });
+
+    $("#renameSubmit").click(function(e) {
+      e.preventDefault();
+      var newname=$("#inputnewname").val();
+      $.ajax({
+        type: 'get',
+        url: '/rename/{{word}}/'+newname+'/',
+        success: function() {
+          window.location = "/"+newname;
+        },
+        error: function(e) {
+          alert(e.responseText);
+        }
+      });
+    });
+
+
+    $(".url-del").click(function(e) {
+      e.preventDefault();
+      var p = $(this).parents(".url-row")
+      $.ajax({
+        type: 'get',
+        url: '/{{word}}/del/'+escape(p.children(".url-url").text()),
+        beforeSend: function() {
+          p.animate({'backgroundColor':'#fb6c6c'},300);
+        },
+        success: function() {
+          refreshHits();
+          p.slideUp('slow',function() {
+            p.remove();
+          });
+        },
+        error: function(e) {
+          alert(e.responseText);
+        }
+      });
+    });
+
+
+    $(".url-add").click(function(e) {
+      e.preventDefault();
+      var i = $("#url-add-url");
+      $.ajax({
+        type: 'get',
+        url: '/{{word}}/add/'+escape(i.val()),
+        success: function(e) {
+          refreshHits();
+          $("<tr class='url-row'><td>"+e+"</td>" +
+            "<td><a alt='view' title='view' href='' class='icon-list'></a>" +
+              "<a href='' class='icon-remove url-del'></a></td></tr>")
+          .insertAfter($("#url-add-tr")).slideDown('slow');
+          i.val("");
+        },
+        error: function(e) {
+          alert(e.responseText);
+        }
+      });
+    });
+
+
+    $(".filter-save").click(function(e) {
+      e.preventDefault();
+      var i = $("#filter-regex");
+      $.ajax({
+        type: 'get',
+        url: '/{{word}}/filter/'+escape(i.val()),
+        success: function(e) {
+          refreshHits();
+        },
+        error: function(e) {
+          alert(e.responseText);
+        }
+      });
+
+    });
+
+    $("#listname").popover({
+      'title':"{{word}}",
+      'content':"Dies ist der aktuelle Name deines Filters. Wenn du lieber etwas einprägsameres wählen möchtest, klicke<br /><b><a class='icon-pencil'></a>Liste umbenennen.</b><br />"+
+      "Ein zufällig gewählter Name ist allerdings gut, damit niemand einfach deine Liste editieren kann.",
+      'placement':"bottom",
+      });
+      $("#filter-regex").popover({
+        'title':"Schlagwörter",
+        'content':'Die Syntax dieser Box basiert auf "regex". Das bedeutet "|" ist ODER und Leerzeichen ist UND.<br />'+
+        'Wenn man also nun beispielsweise nach <em>greenpeace</em> ODER <em>grün frieden</em> suchen möchte, gibt man ein:<br/><code>greenpeace|grün frieden</code>. ',
+        'placement':"bottom",
+      });
+      $("#url-add-url").popover({
+        'title':"Adresse des Feeds",
+        'content':'Hier musst du eine gültige RSS/Atom-Adresse angeben. Um diese zu ermitteln ist es am einfachsten, du suchst auf der jeweiligen Nachrichten-Seite nach "RSS".'+
+        'In der Regel findest du dann einen Link, den du hier einfügen musst.',
+        'placement':"bottom",
+      });
+      $(".rss-well").popover({
+        'placement':"bottom",
+        'title':"RSS Feed",
+        'content': 'Diesen Link solltest du nun in deinem bevorzugten Feedreader einfügen. So wirst du immer informiert, wenn dein Schlagwort in den von dir angegeben Feeds vorkommt.',
+      });
+      $(".icon-pencil").tooltip({'placement':'bottom'});
+      $("#renameList").click(function(){
+        $('#myModal').modal();
+        $("#inputnewname").focus();
+      });
+
   });
 </script>
-<style>
-  table {
-    border-style:solid dotted;
-    border-collapse: collapse;
-  }
-
-</style>
-
 
 
 <div class="page-header">
-  <h1>NaFi</h1>
-</div>
-<div class="row">
-  <div class="span12">
-
-    <ul class="nav nav-tabs" id="myTab">
-      <li class="active"><a href="#sources"><strong>1. Sources</strong></a></li>
-      <li><a href="#output"><strong>2. Output</strong></a></li>
-      <li><a href="#export"><strong>3. Export</strong></a></li>
-    </ul>
-
-    <div class="tab-content">
-      <div class="tab-pane active" id="sources">
-        <form method=POST action="/">
-          {% csrf_token %}
-          <table style="width:100%;">
-            <tr><td>
-<textarea rows="15" style="width:99%; border-style:dotted;" name='sources'>
-{% for source in sources %}{{source.url}}
-{%endfor%}
-</textarea>
-            </td></tr>
-            <tr><td>
-<textarea rows="2" style="width:99%; overflow:hidden; border-style:dotted;" name='filters'>
-{% for filt in filters %}{{filt.regex}}
-{%endfor%}
-</textarea>
-            </td></tr>
-            <tr><td>
-                <input type="submit" name="op" value="Erzeugen" /><!--<input type="submit" name="op" value="Validieren">-->
-            </td></tr>
-          </table>
-        </form>
-      </div>
-      <div class="tab-pane" id="output">
-        <div align=center id='blubber'><img src="{{MEDIA_URL}}img/spinner.gif" /></div>
-      </div>
-      <div class="tab-pane" id="export">
-
-        <b><a href="http://gpnews.noova.de/{{timestamp}}/rss">http://gpnews.noova.de/{{timestamp}}/rss</a></b><br/>
-        <a href="http://gpnews.noova.de/{{timestamp}}/atom">http://gpnews.noova.de/{{timestamp}}/atom</a><br/>
-        <a href="http://gpnews.noova.de/{{timestamp}}/html">http://gpnews.noova.de/{{timestamp}}/html</a>
-
+  <div class="row">
+    <div class="span6">
+      <h1>NaFi für <span id="listname" style="color:green;border-bottom: 1px black dotted;">{{word}}</span>
+        <a id="renameList" class="icon-pencil" href="#myModal" data-toggle="modal" data-target="#myModal" data-original-title="Liste umbenennen"></a>
+      </h1> <!--<button class="btn"><a class="icon-share"></a> Liste duplizieren</button> -->
+    </div>
+    <div class="span6">
+      <div class="well rss-well" style="padding:6px;margin-bottom:0;">
+        <h3><a href="http://nafi.gpbintern.de/{{word}}/rss">http://nafi.gpbintern.de/{{word}}/rss</a></h3>
+        <!-- <a href="http://nafi.gpbintern.de/{{word}}/atom">http://nafi.gpbintern.de/{{word}}/atom</a><br/> -->
+        <!-- <small><a href="http://nafi.gpbintern.de/{{word}}/html">http://nafi.gpbintern.de/{{word}}/html</a></small> -->
       </div>
     </div>
+  </div>
+</div>
+<div class="modal hide" id="myModal">
+  <form class="form-horizontal">
+    <div class="modal-header">
+      <h3>Liste umbenennen</h3>
+    </div>
+    <div class="modal-body">
+      <div class="control-group">
+        <label class="control-label" for="inputnewname">Neuer Name</label>
+        <div class="controls">
+          <input type="text" class="input" id="inputnewname" placeholder="{{word}}" />
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a href="#" class="btn" data-dismiss="modal">Schließen</a>
+      <input type="submit" href="#" id="renameSubmit" class="btn btn-primary" value="Umbenennen" />
+    </div>
+  </form>
+</div>
+
+<div class="row">
+  <div class="span12">
+    <form class="well form-inline">
+      <input type="text" class="input-small" id="filter-regex" style="width:80%;" placeholder="Filter" value="{{regex}}" />
+      <button type="submit" class="btn filter-save">Speichern</button>
+    </form>
+
+    <table style="width:100%;">
+      <tr>
+        <td>
+          <table class="table table-striped table-bordered" id="url-list">
+            <tr id="url-add-tr">
+              <td style="width:80%;">
+                <form class="form-search" style="margin:0;">
+                  <input type="text" placeholder="Adresse" name="url" id="url-add-url" style="width:70%;" />
+                  <button type="submit" class="btn url-add">Hinzufügen</button>
+                </form>
+              </td>
+              <td>
+              </td>
+            </tr>
+            {% for source in sources %}
+            <tr class="url-row">
+              <td class="url-url">{{source.url}}</td>
+              <td><a alt="view" title="view" target="_blank" href="/source/{{source.url|urlencode}}" class="icon-list"></a>
+                <a href="" class="icon-remove url-del"></a>
+              </td>
+            </tr>
+            {%endfor%}
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <div class="well" align=center id='blubber'><img src="{{MEDIA_URL}}img/spinner.gif" /></div>
+  </div>
+</div>
   </div>
 </div>
 {% endblock %}

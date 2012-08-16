@@ -3,7 +3,7 @@ from feedfilter.proj.models import *
 
 class SourceAdmin(admin.ModelAdmin):
     pass
-class FilterAdmin(admin.ModelAdmin):
+class WordAdmin(admin.ModelAdmin):
     pass
 class NewsContentAdmin(admin.ModelAdmin):
     pass
@@ -11,7 +11,7 @@ class NewsEntryAdmin(admin.ModelAdmin):
     pass
 
 admin.site.register(Source, SourceAdmin)
-admin.site.register(Filter, FilterAdmin)
+admin.site.register(Word, WordAdmin)
 admin.site.register(NewsContent, NewsContentAdmin)
 admin.site.register(NewsEntry, NewsEntryAdmin)
 

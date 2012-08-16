@@ -9,17 +9,20 @@
     <link rel="stylesheet" media="screen" href="{{MEDIA_URL}}css/main.css">
     <link rel="stylesheet" media="screen" href="{{MEDIA_URL}}css/bootstrap-responsive.min.css">
 
-    <link rel="alternate" type="application/rss+xml" title="FeedFilter" href="http://nafi.gpbintern.de/{{timestamp}}/rss/">
-    <link rel="alternate" type="application/atom+xml" title="FeedFilter" href="http://nafi.gpbintern.de/{{timestamp}}/atom/">
+    <link rel="alternate" type="application/rss+xml" title="FeedFilter" href="http://nafi.gpbintern.de/{{word}}/rss/">
+    <!-- <link rel="alternate" type="application/atom+xml" title="FeedFilter" href="http://nafi.gpbintern.de/{{word}}/atom/"> -->
     <script type="text/javascript" src="{{MEDIA_URL}}js/jquery.min.js"></script>
     <script type="text/javascript" src="{{MEDIA_URL}}js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{{MEDIA_URL}}js/bootstrap-tooltip.js"></script>
+    <script type="text/javascript" src="{{MEDIA_URL}}js/bootstrap-popover.js"></script>
+    <script type="text/javascript" src="{{MEDIA_URL}}js/bootstrap-modal.js"></script>
 
   </head>
   <body> <!-- style="width:800px;margin:0px auto;"> -->
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <a class="brand" href="/">NaFi</a>
+          <a class="brand" href="/{{word}}">NaFi</a>
         </div>
       </div>
     </div>
@@ -27,18 +30,6 @@
     </div>
     <div class="container">
       <div class="content">
-        <h4>Hallihallo ÖffKo!</h4>
-        <form action="/updates/" method=POST>
-          {% csrf_token %}
-          <div class="control-group">
-            <label class="control-label" for="appendedInputButton">Bitte gib deine Email-Adresse ein, dann werde ich dir eine Mail schicken, wenn ich NaFi geupdatet habe:</label>
-            <div class="controls">
-              <div class="input-append">
-                <input class="span2" id="appendedInputButton" name="email" size="16" type="text" /><button class="btn btn-submit" type="submit">Absenden</button>
-              </div>
-            </div>
-          </div>
-        </form>
 
         {% block content %}{% endblock %}
       </div>
