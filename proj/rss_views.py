@@ -8,7 +8,7 @@ from feedfilter.proj.models import Source, Word
 
 class RssFeed(Feed):
     title = "NaFi: Nachrichten Filter"
-    link = "http://nafi.noova.de/"
+    link = "http://nafi.gpbintern.de/"
     description = "Newsfeed Aggregator for GP|Bln"
 
     def get_object(self, request, word):
@@ -18,10 +18,8 @@ class RssFeed(Feed):
     def items(self):
         word = Word.objects.get(name=self.word)
         sources = Source.objects.filter(word=word)
-        #filters = Filter.objects.filter(group=self.timestamp)
         news = News(sources, word.regex)
         return news.entries
-
 
     def item_link(self, item):
         return item.url
@@ -40,7 +38,6 @@ class RssFeed(Feed):
         from datetime import datetime
         from time import mktime
         return item.updated
-        #return datetime.fromtimestamp(mktime(item.updated))
 
 class AtomFeed(RssFeed):
     feed_type = Atom1Feed

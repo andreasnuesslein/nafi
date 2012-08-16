@@ -6,8 +6,7 @@ class Word(models.Model):
     regex = models.CharField(max_length=500)
 
     def __unicode__(self):
-        return("%s: %s" %(self.name,self.regex))
-
+        return("%s (%s)" %(self.name,self.regex))
 
 
 class Source(models.Model):
@@ -17,23 +16,6 @@ class Source(models.Model):
     def __unicode__(self):
         return("%s: %s" %(self.word, self.url))
 
-    def sane(self):
-        if self.url == "":
-            return False
-        return True
-
-    def validate(self):
-        print "validate: "+self.url
-        feed = parse(self.url)
-        try:
-            keys = feed.entries[0].keys()
-            if 'updated_parsed' in keys:
-                return {'url':self.url, 'status':'green'}
-            return {'url':self.url, 'status':'#bbbb00', 'msg':'updated missing.. not gonna archive'}
-
-        except:
-            return {'url':self.url, 'status':'red'}
-
 
 class NewsContent(models.Model):
     url = models.URLField()
@@ -41,6 +23,7 @@ class NewsContent(models.Model):
 
     def __unicode__(self):
         return("%s: %s" % (self.checked_last, self.url))
+
 
 class NewsEntry(models.Model):
     url = models.URLField()
@@ -54,7 +37,6 @@ class NewsEntry(models.Model):
 
     def matches(self, regex):
         searchthrough = unicode(self.title) + unicode(self.summary)
-
         if regex.search(searchthrough):
             return True
         return False

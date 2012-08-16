@@ -95,14 +95,6 @@ def renameWord(request, word, new):
     except:
         return HttpResponseForbidden("error")
 
-
-def validate_sources(request, timestamp):
-    sources = Source.objects.filter(group=timestamp)
-    template = 'validate.html'
-    valid_sources = [ source.validate() for source in sources ]
-    data = {'sources': valid_sources }
-    return render_to_response(request, template, data)
-
 def viewSource(request, url):
     sources= Source.objects.filter(url=url)
     news = News(sources,"")
