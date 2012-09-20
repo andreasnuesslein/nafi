@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 from django.core.mail import send_mail
 
 
-from nafi.contrib.shortcuts import render_to_response
+from contrib.shortcuts import render_to_response
 from proj.models import Source, Word
 from proj.collector import News
 

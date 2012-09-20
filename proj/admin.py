@@ -1,5 +1,5 @@
 from django.contrib import admin
-from nafi.proj.models import *
+from proj.models import *
 
 class SourceAdmin(admin.ModelAdmin):
     pass
