@@ -4,13 +4,13 @@
   <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
     <title>NaFi:  {% block title %}{% trans "Home" %}{% endblock %}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" media="screen" href="{{MEDIA_URL}}css/bootstrap.min.css">
-    <link rel="stylesheet" media="screen" href="{{MEDIA_URL}}css/main.css">
-    <link rel="stylesheet" media="screen" href="{{MEDIA_URL}}css/bootstrap-responsive.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" media="screen" href="{{MEDIA_URL}}css/bootstrap.min.css" />
+    <link rel="stylesheet" media="screen" href="{{MEDIA_URL}}css/main.css" />
+    <link rel="stylesheet" media="screen" href="{{MEDIA_URL}}css/bootstrap-responsive.min.css" />
 
-    <link rel="alternate" type="application/rss+xml" title="FeedFilter" href="http://nafi.gpbintern.de/{{word}}/rss/">
-    <!-- <link rel="alternate" type="application/atom+xml" title="FeedFilter" href="http://nafi.gpbintern.de/{{word}}/atom/"> -->
+    <link rel="alternate" type="application/rss+xml" title="NaFi" href="http://{{request.META.HTTP_HOST}}/{{word}}/rss/" />
+    <!-- <link rel="alternate" type="application/atom+xml" title="NaFi" href="http://{{request.META.HTTP_HOST}}/{{word}}/atom/"> -->
     <script type="text/javascript" src="{{MEDIA_URL}}js/jquery.min.js"></script>
     <script type="text/javascript" src="{{MEDIA_URL}}js/bootstrap.min.js"></script>
     <script type="text/javascript" src="{{MEDIA_URL}}js/bootstrap-tooltip.js"></script>
@@ -27,7 +27,6 @@
       </div>
     </div>
 
-    </div>
     <div class="container">
       <div class="content">
 

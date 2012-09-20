@@ -13,7 +13,7 @@ class Newsprovider:
 
 
     def fetch(self):
-        print "fetching: %s" % self.source
+        #print "fetching: %s" % self.source
         try:
             self.provider = NewsContent.objects.get(url = self.source)
         except:
@@ -47,7 +47,7 @@ class Newsprovider:
             ne = NewsEntry(url=entry.link, title=entry.title, summary=entry.summary,
                     updated=updated,
                     provider = self.provider)
-            print ne
+            #print ne
             ne.save()
 
         self.provider.save()

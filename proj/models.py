@@ -28,7 +28,7 @@ class NewsContent(models.Model):
 class NewsEntry(models.Model):
     url = models.URLField()
     title = models.CharField(max_length=500)
-    summary = models.CharField(max_length=500)
+    summary = models.CharField(max_length=5000)
     updated = models.DateTimeField(blank=True)
     provider = models.ForeignKey(NewsContent)
 

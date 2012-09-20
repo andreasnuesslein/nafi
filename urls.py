@@ -1,8 +1,8 @@
 from django.conf.urls.defaults import patterns, include, url
 from django.conf import settings
 
-from feedfilter.proj.rss_views import RssFeed, AtomFeed
-from feedfilter.proj.views import *
+from nafi.proj.rss_views import RssFeed, AtomFeed
+from nafi.proj.views import *
 
 from django.contrib import admin
 admin.autodiscover()

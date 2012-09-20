@@ -3,11 +3,9 @@ from django.shortcuts import redirect
 from django.core.mail import send_mail
 
 
-from feedfilter.contrib.shortcuts import render_to_response
+from nafi.contrib.shortcuts import render_to_response
 from proj.models import Source, Word
 from proj.collector import News
-
-from time import time
 
 def index(request, word=None):
     if not word:
@@ -20,14 +18,6 @@ def index(request, word=None):
                 return HttpResponseRedirect("/"+word)
 
 
-    #if not timestamp:
-    #    try:
-    #        timestamp = Source.objects.order_by('-group')[0].group
-    #    except:
-    #        timestamp = 0
-    #    return HttpResponseRedirect('/%s/' %(timestamp))
-    #import ipdb;ipdb.set_trace()
-    print(word)
     wordobj = Word.objects.filter(name=word)
     if wordobj:
         wordobj = wordobj[0]
@@ -113,9 +103,3 @@ def ajax(request, word):
     template = 'ajax.html'
     return render_to_response(request, template, data)
 
-def updates(request):
-    if request.method == 'POST':
-        send_mail("NaFi abo", request.POST['email'], 'nafi@nafi.gpbintern.de', ['nutz@noova.de'])
-        send_mail("NaFi Benachrichtigung", "Aloha, ich habe dich in meiner Liste gespeichert und werde dir eine Email schicken, sobald NaFi eine Login-Moeglichkeit bietet. :)", 'nafi@nafi.gpbintern.de', [request.POST['email']])
-
-    return redirect("/")

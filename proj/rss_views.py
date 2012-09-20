@@ -8,8 +8,8 @@ from proj.models import Source, Word
 
 class RssFeed(Feed):
     title = "NaFi: Nachrichten Filter"
-    link = "http://nafi.gpbintern.de/"
-    description = "Newsfeed Aggregator for GP|Bln"
+    link = "http://"+"TODO"
+    description = "News filter. One feed to conglomerate and filter them all..    and in the darkness bind them."
 
     def get_object(self, request, word):
         self.word = word
