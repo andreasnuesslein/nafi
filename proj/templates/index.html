@@ -10,7 +10,9 @@
           $(this).html("=(");
         }
         var ix = $("#filter-regex").val();
-        $(this).html($(this).html().replace(new RegExp("("+ix+")","gi"),"<span class='highlight'>$1</span>"));
+        if(ix){
+          $(this).html($(this).html().replace(new RegExp("("+ix+")","gi"),"<span class='highlight'>$1</span>"));
+        }
       });
     }
     refreshHits();
